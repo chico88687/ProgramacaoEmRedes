@@ -1,0 +1,30 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/contactanos.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+{% if mensagem %}
+    <p><strong>{{ mensagem }}</strong></p>
+{% endif %}
+    <h1>{{titulo_pagina}}</h1>
+    <form action="{% url 'duvidasemcasa:registate_registo' %}" method="post">
+        {% csrf_token %}
+        <p><label for="username">UserName:</label><input type="text" name="username" id="username" required></p>
+        <p><label for="proprio">Primeiro Nome:</label><input type="text" id="proprio" name="proprio" placeholder="First Name"></p>
+        <p><label for="apelido">Ultimo Nome:</label><input type="text" id="apelido" name="apelido" placeholder="Last Name"></p>
+        <p><label for="email">E-mail: </label><input type="email" name="email" id="email" required></p>
+        <p><label for="pass">Password: </label><input type="password" name="pass" id="pass" required></p>
+        <p><label for="confirma">Confirmar Palavra passe:</label><span id="msg"> </span><input type="password" id="confirma" name="confirma" placeholder="confirmar_senha" required></p>
+        <input type="radio" name="tipo" id="aluno" value="aluno" required><label for="aluno">Aluno</label>
+        <input type="radio" name="tipo" id="professor" value="professor" required><label for="professor">Professor</label>
+        <label for="escola">Escola: </label>
+            <select id="escola" name="escola" required>
+            {% for e in escolas %}
+            <option value="{{e.sigla}}">{{e.sigla}}</option>
+            {% endfor %}
+            </select>
+        <p><label for="curso">Curso: </label><input type="text" name="curso" id="curso"></p>
+        <input type="submit" value="Registar" id="registar">
+    </form>
+{% endblock %}

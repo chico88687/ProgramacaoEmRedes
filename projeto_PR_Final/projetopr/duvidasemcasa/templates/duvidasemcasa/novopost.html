@@ -1,0 +1,36 @@
+{% extends "duvidasemcasa/base.html" %}
+
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/contactanos.css' %}"/>
+{% endblock %}
+
+{% block conteudo %}
+{% load static %}
+<form method="post" enctype="multipart/form-data" action="{% url 'duvidasemcasa:criapost' escola.sigla %}">
+    <h2>{{escola.nome.capitalize}} - Novo Post</h2>
+{% csrf_token %}
+    Tipo
+    <select name="tipo">
+        <option value="Convivio">Convivio</option>
+        <option value="Duvida">Duvida</option>
+        <option value="Explicação">Explicação</option>
+        <option value="Anuncio">Anuncio</option>
+    </select>
+    <br>
+    Curso (separa diferentes cursos por virgulas) <input type="text" name="curso" maxlength="500">
+    <br>
+    Cadeira (separa diferentes cadeiras por virgula) <input type="text" name="cadeira" maxlength="200">
+    <br>
+    Titulo <input type="text" name="titulo" maxlength="200">
+    <br>
+    Texto
+    <br>
+    <textarea name="texto" rows="10"></textarea>
+    <br>
+    Adicionar ficheiro de imagem ou pdf <span id="msg"> </span>
+    <br>
+    <input type="file" name="myfile"  id="myfile" multiple>
+    <input type="submit" id="submeter" value="Upload">
+</form>
+{% endblock %}

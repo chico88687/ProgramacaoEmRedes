@@ -1,0 +1,43 @@
+{% extends "duvidasemcasa/base.html" %}
+
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/login.css' %}"/>
+{% endblock %}
+
+{% block conteudo %}
+
+{% if erro %}
+    <p class="aviso" id="erro"><strong>{{ erro }}</strong></p>
+{% endif %}
+
+<table>
+    <form action="{% url 'duvidasemcasa:login2' %}" method="post">
+    {% csrf_token %}
+        <tr>
+            <td><label for="username">Usuario</label></td>
+            <td><input type="text" id="username" name="username" placeholder="Username" required></td>
+        </tr>
+        <tr>
+            <td><label for="password">Palavra-Passe</label></td>
+            <td><input type="password" id="password" name="password" placeholder="Password" required></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Login"></td>
+        </tr>
+    </form>
+    <tr>
+        <td>
+            <a href="{% url 'duvidasemcasa:registate' %}">
+                <button>Criar Conta</button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'reset_password' %}">
+                <button>Recuperar Conta</button>
+            </a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

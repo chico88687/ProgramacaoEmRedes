@@ -1,0 +1,49 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/perfil.css' %}"/>
+{% endblock %}
+
+{% block conteudo %}
+{% load static %}
+
+<table>
+    <tr>
+        <td>Nota: {{user.conta.rating}}<span style="font-size:smaller">
+            <br>(em {{user.conta.votos}} votos)</span></td>
+        <td colspan="2">
+            {% if user.conta.p_proprio %}
+            {{user.first_name}}
+            {% endif %}
+             {% if user.conta.p_apelido %}
+            {{user.last_name}}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="8" id="userpic"><img src="{{ user.conta.imagem_perfil }}"></td>
+    </tr>
+    <tr>
+        <td>Username:</td>
+        <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+        <td>Cargo:</td>
+        <td>{{ user.conta.tipo}}</td>
+    </tr>
+    {% if user.conta.p_email %}
+    <tr>
+        <td>E-mail:</td>
+        <td>{{ user.email }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td>Escola:</td>
+        <td>{{user.conta.escola.sigla}}</td>
+    </tr>
+    <tr>
+        <td>Curso:</td>
+        <td>{{user.conta.curso_departamento}}</td>
+    </tr>
+</table>
+{% endblock %}

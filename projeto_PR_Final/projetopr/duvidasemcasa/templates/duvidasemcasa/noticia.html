@@ -1,0 +1,17 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/noticia.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+<h1>{{titulo_pagina}}</h1>
+<hr>
+<article>
+    {% if noticia.imagem_noticia %}
+    <img src="{{noticia.imagem_noticia}}" width="125px" height="125px">
+    {% endif %}
+    <h2>{{ noticia.titulo }}</h2>
+    <p>{{ noticia.texto|linebreaks }}</p>
+    <time>{{noticia.data_publicacao}}</time>
+</article>
+{% endblock %}

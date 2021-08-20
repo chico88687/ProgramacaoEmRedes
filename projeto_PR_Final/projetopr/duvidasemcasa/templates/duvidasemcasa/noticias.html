@@ -1,0 +1,41 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/noticia.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+{% if staff %}
+<form action="{% url 'duvidasemcasa:novanoticia' %}">
+    <Button type="submit" name="noticia" id="noticia">Publicar Noticia</Button>
+</form>
+{% endif %}
+<h1>{{titulo_pagina}}</h1>
+<hr>
+{% for noticia in page_obj %}
+<article>
+    {% if noticia.imagem_noticia %}
+    <img src="{{noticia.imagem_noticia}}" width="125px" height="125px">
+    {% endif %}
+    <h2><a href="{% url 'duvidasemcasa:noticia_especifica' noticia.id %}" style="color:black">{{ noticia.titulo }}</a></h2>
+    <p>{{ noticia.texto|linebreaks }}</p>
+    <time>{{noticia.data_publicacao}}</time>
+</article>
+{% endfor %}
+<div class="pagination">
+  <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primeiro</a>
+            <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Pag. {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">próximo</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Ultimo &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

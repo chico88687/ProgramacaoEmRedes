@@ -1,0 +1,8 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block conteudo %}
+<h2>Recuperacão da palavra-passe</h2>
+    <p>
+    Foi enviado ao seu email as informaçoes nescessarias para alterar a palavra passe
+    </p>
+<a href="{% url 'duvidasemcasa:login' %}"><button>Regressar</button></a>
+{% endblock %}

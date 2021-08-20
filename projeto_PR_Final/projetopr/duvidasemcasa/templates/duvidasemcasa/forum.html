@@ -1,0 +1,89 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/forum.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+    <h1>{{titulo_pagina}}</h1>
+    {% for escola in escolas %}
+        <table class="{{escola.sigla}}">
+            <thead>
+                <tr>
+                    <th class="top-th" colspan="3"><h2><a href="{% url 'duvidasemcasa:escola' escola.sigla %}">{{escola.nome}}</a></h2></th>
+                </tr>
+                {% for ordem in escola.ordens %}
+                <tr>
+                    <th colspan="3"><h3><a href="{{escola.sigla}}/ordem/{{ordem.disp}}">{{ordem.t}}</a></h3></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in ordem.posts %}
+                    <tr>
+                        <td class="pequeno">
+                            <img src="{{post.autor.imagem_perfil}}" class="userimg">
+                            <a href="{% url 'duvidasemcasa:perfil_user' post.autor.user.username %}">{{post.autor.user.username}}</a>
+                            <br>
+                            {% ifequal post.autor.votos 0 %}
+                                Sem votos
+                            {% else %}
+                                Rating: {{post.autor.rating}}
+                                <br>
+                                Votos: {{post.autor.votos}}
+                            {% endifequal %}
+                        </td>
+                        <td class="maior">
+                            <a class="titulo" href="{% url 'duvidasemcasa:post' escola.sigla post.id %}">{{post.titulo}}</a>
+                            <span style="font-size: smaller">({{post.tipo}})</span>
+                            <br>
+                            <br>
+                            {{post.preview_texto|linebreaks}}
+                            <br>
+                            <br>
+                            <span class="info">
+                            {% ifequal post.ratingpost_set.all.count 0 %}
+                                Sem votos
+                            {% else %}
+                                Rating: {{post.rating}}/10
+                                Votos: {{post.ratingpost_set.all.count}}
+                            {% endifequal %}
+                            <br>
+                            {% if post.cursos %}
+                                Curso(s): {{post.cursos}}
+                                <br>
+                            {% endif %}
+                            {% if post.cadeiras %}
+                                Cadeira(s): {{post.cadeiras}}
+                                <br>
+                            {% endif %}
+                            Publicado: {{post.data_publicacao}}
+                            {% if post.data_publicacao != post.data_update %}
+                                <br>
+                                Update: {{post.data_update}}
+                            {% endif %}
+                            </span>
+                        </td>
+                        <td class="pequeno">
+                            {% if post.comentario_set.all.count == 0 %}
+                                Sem Comentários
+
+                            {% else %}
+                                Comentários: {{post.comentario_set.all.count}}
+                                <br>
+                                    {% if post.media_notas_comentarios != 99 %}
+                                    Melhor nota: {{post.melhor_comentario.rating}}
+                                    <br>
+                                    Media das notas: {{post.media_notas_comentarios}}
+                                    {% else %}
+                                    Sem comentarios avaliados
+                                    {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br>
+    {% endfor %}
+{% endblock %}

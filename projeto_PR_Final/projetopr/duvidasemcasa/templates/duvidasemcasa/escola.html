@@ -1,0 +1,115 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/forum.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/escola.css' %}"/>
+{% endblock %}
+{% block conteudo%}
+<div id="butoes">
+    <a href="{% url 'duvidasemcasa:escolaordem' classe.sigla 'novo' %}">
+        <button {% ifequal disp 'novo' %} disabled {% endifequal %}>Mais Recentes</button>
+    </a>
+    <a href="{% url 'duvidasemcasa:escolaordem' classe.sigla 'update' %}">
+        <button {% ifequal disp 'update' %} disabled {% endifequal %}>Ultimos Updates</button>
+    </a>
+    <a href="{% url 'duvidasemcasa:escolaordem' classe.sigla 'votacao' %}">
+        <button {% ifequal disp 'votacao' %} disabled {% endifequal %}>Melhor Média</button>
+    </a>
+    {% if logado %}
+        <a href="{% url 'duvidasemcasa:novopost' classe.sigla %}"><button>Criar Post</button></a>
+    {% endif %}
+</div>
+<br>
+
+<table class="{{classe.sigla}}">
+    <thead>
+        <tr>
+            <th class="top-th" colspan="3"><h2>{{classe.nome}}</h2></th>
+        </tr>
+        <tr>
+            <th colspan="3"><h3>{{top_tabela}}</h3></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in page_obj %}
+        <tr>
+            <td class="pequeno">
+                <img src="{{post.autor.imagem_perfil}}" class="userimg">
+                <a href="{% url 'duvidasemcasa:perfil_user' post.autor.user.username %}">{{post.autor.user.username}}</a>
+                <br>
+                {% ifequal post.autor.votos 0 %}
+                Sem votos
+                {% else %}
+                Rating: {{post.autor.rating}}
+                <br>
+                Votos: {{post.autor.votos}}
+                {% endifequal %}
+            </td>
+            <td class="maior">
+                <a class="titulo" href="{% url 'duvidasemcasa:post' classe.sigla post.id %}">{{post.titulo}}</a>
+                <span style="font-size: smaller">({{post.tipo}})</span>
+                <br>
+                <br>
+                {{post.preview_texto}}
+                <br>
+                <br>
+                <span class="info">
+                    {% ifequal post.ratingpost_set.all.count 0 %}
+                    Sem votos
+                    {% else %}
+                    Rating: {{post.rating}}/10
+                    Votos: {{post.ratingpost_set.all.count}}
+                    {% endifequal %}
+                    <br>
+                    {% if post.cursos %}
+                    Curso(s): {{post.cursos}}
+                    <br>
+                    {% endif %}
+                    {% if post.cadeiras %}
+                    Cadeira(s): {{post.cadeiras}}
+                    <br>
+                    {% endif %}
+                    Publicado: {{post.data_publicacao}}
+                    {% if post.data_publicacao != post.data_update %}
+                    <br>
+                    Update: {{post.data_update}}
+                    {% endif %}
+                </span>
+            </td>
+            <td class="pequeno">
+                {% if post.comentario_set.all.count == 0 %}
+                Sem Comentários
+                {% else %}
+                Comentários: {{post.comentario_set.all.count}}
+                <br>
+                {% if post.media_notas_comentarios != 99 %}
+                Melhor nota: {{post.melhor_comentario.rating}}
+                <br>
+                Media das notas: {{post.media_notas_comentarios}}
+                {% else %}
+                Sem comentarios avaliados
+                {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="pagination">
+  <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primeiro</a>
+            <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Pag. {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">próximo</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Ultimo &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}}

@@ -1,0 +1,149 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/post.css' %}"/>
+{% endblock %}
+
+{% block conteudo %}
+{% load static %}
+<section class="{{post.escola.sigla}}">
+<h1>
+    <a href="{% url 'duvidasemcasa:forum' %}">Forum</a>/
+    <a href="{% url 'duvidasemcasa:escola' post.escola.sigla %}">{{escola.sigla.capitalize}}</a>/{{post.titulo}}
+    {% ifequal post.ratingpost_set.count 0 %}
+        Não avaliado
+    {% else %}
+        {{post.rating}}/10,0
+    {% endifequal %}
+</h1>
+
+{% if avalia == 0 %}
+<form action="{% url 'duvidasemcasa:avaliapost' post.escola.sigla post.id %}" method="post">
+    {% csrf_token %}
+    <select name="nota">
+        <option value="0">0</option>
+        {% for i in '0000000000'|make_list %}
+        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Avaliar">
+</form>
+{% elif avalia == 1 %}
+    (Avaliaste em {{avaliacao}})
+{% elif avalia == 3 %}
+    Faz Login/Registate para avaliar
+{% endif %}
+
+<br>
+    <span style="border: none; font-size: larger;">{{post.tipo}}</span>
+    {% if post.cursos %}
+    /Curso(s): {{post.cursos}}
+    {% endif %}
+    {% if post.cadeiras %}
+    /Cadeira(s): {{post.cadeiras}}
+    <br>
+    {% endif %}
+
+<br>
+    <div id="post-user">
+        <img class="pic_users" src="{{post.autor.imagem_perfil}}">
+        <a href="{% url 'duvidasemcasa:perfil_user' post.autor.user.username %}">{{post.autor.user.username}}</a>
+        <br>
+        {{post.autor.tipo}} do {{post.autor.escola.sigla.capitalize}}
+        <br>
+        {% if post.autor.curso %}
+            post.autor.curso
+            <br>
+        {% endif %}
+        Nota: {{post.autor.rating}} (em {{post.autor.votos}} votos)
+    </div>
+    <p>{{post.texto|linebreaks}}</p>
+    <div id="post-pics">
+        {% for p in pic %}
+            <a href="{{p.endereco}}"><img src="{{ p.endereco }}"></a>
+        {% endfor %}
+        {% for p in pdf %}
+            <a href="{{p.endereco}}">{{ p.endereco }}</a>
+        {% endfor %}
+    </div>
+
+    {% if avalia != 3 %}
+    <form  id="comentario" method="post" enctype="multipart/form-data" action="{% url 'duvidasemcasa:post_comentario' post.escola.sigla post.id %}">
+        {% csrf_token %}
+        Comentário
+        <input type="file" name="ficheiro" id="ficheiro">
+        <br>
+        <textarea name="texto" required rows="10"></textarea>
+        <input type="submit" value="Submeter comentário">
+    </form>
+    {% endif %}
+</section>
+<table>
+{% for c in page_obj %}
+    <tr>
+        <td class="{{c.autor.escola.sigla}} pequeno">
+            <img src="{{c.autor.imagem_perfil}}" class="pic_users">
+            <a href="{% url 'duvidasemcasa:perfil_user' c.autor.user.username %}">{{c.autor.user.username}}</a>
+            <br>
+            {{c.autor.tipo}} do {{c.autor.escola.sigla.capitalize}}
+            <br>
+            {% if c.autor.curso %}
+                c.autor.curso
+                <br>
+            {% endif %}
+            {% ifequal c.autor.votos 0 %}
+                Sem votos
+            {% else %}
+                Nota: {{c.autor.rating}} (em {{c.autor.votos}} votos)
+            {% endifequal %}
+        </td>
+        <td class="maior">
+            <span>{{c.data_publicacao}}</span>
+            <br>
+            {{c.texto|linebreaks}}
+        </td>
+        <td class="pequeno">
+            {% if c.endereco %}
+            Anexado
+            <br>
+            <a href="{{c.endereco}}"><img src="{{c.endereco}}" onerror="this.src='/duvidasemcasa/static/media/ficheiro.png'"></a>
+            <br>
+            {% endif %}
+            Nota: {{c.rating}} (em {{c.ratingcomentario_set.all.count}} votos)
+            <br>
+            {% if avalia != 3 and c.autor != autorcomentario and c not in avaliou %}
+                <form action="{% url 'duvidasemcasa:avaliacomentario' post.escola.sigla post.id c.id %}" method="post">
+                {% csrf_token %}
+                    <select name="nota">
+                        <option value="0">0</option>
+                        {% for i in '0000000000'|make_list %}
+                        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Avaliar">
+                </form>
+                {% elif avalia == 3 %}
+                    Faz Login/Registate para avaliar
+                {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+<div class="pagination">
+  <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primeiro</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Pag. {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Próximo</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Ultimo &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

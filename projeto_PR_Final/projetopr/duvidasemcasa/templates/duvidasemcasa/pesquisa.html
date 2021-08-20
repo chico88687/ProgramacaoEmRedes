@@ -1,0 +1,169 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/pesquisa.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+    <form action="{% url 'duvidasemcasa:manda_procurar' %}" method="get">
+        <table class="search_table">
+            <tr>
+                <td>
+                    <label for="search">Procurar:</label>
+                        <input type="text" id="search" name="search"{% if previous_search == "Search" %} placeholder="{{ previous_search }}"
+                        {% else %} value="{{ previous_search }}" {% endif %} required>
+                    <input type="submit" value="pesquisar">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Perfils<input type="checkbox" name="filter_search" value="s_perfil"  {{ c_perfil }}></label>
+                    <label>Posts<input type="checkbox"  name="filter_search" value="s_post" {{ c_post }}></label>
+                    <label>Notícias<input type="checkbox"name="filter_search" value="s_news" {{ c_news }}></label>
+                </td>
+            </tr>
+        </table>
+        <br>
+        {% if c_perfil == "checked" %}
+            <table>
+                <tr>
+                    <th class="th_results">Perfil</th>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="perfil_tipo">Tipo: </label>
+                        <select id="perfil_tipo" name="perfil_tipo">
+                            <option value="" {% if fperfil_tipo == "" %}selected{% endif %}>-</option>
+                            <option value="aluno" {% if fperfil_tipo == "aluno" %}selected{% endif %}>Aluno</option>
+                            <option value="professor" {% if fperfil_tipo == "professor" %}selected{% endif %}>
+                                Professor
+                            </option>
+                        </select>
+                        <label for="perfil_escola">Escola: </label>
+                        <select id="perfil_escola" name="perfil_escola">
+                            <option value="" {% if fperfil_escola == "" %}selected{% endif %}>-</option>
+                            {% for x in escola %}
+                                <option value="{{ x.sigla }}"
+                                        {% if fperfil_escola == x.sigla %}selected{% endif %}>{{ x.sigla }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Filtrar">
+                    </td>
+                </tr>
+                {% if not perfils %}
+                    <tr>
+                        <td><strong>{{ perfil_mensagem }}</strong></td>
+                    </tr>
+                {% else %}
+                    {% for x in perfils %}
+                        <tr>
+                            <td>
+                                <img src="{{ x.imagem_perfil }}" class="userimg">
+                                <br>
+                                <a href="{{ x.user.username }}">{{ x.user.username }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        {% endif %}
+        <br>
+        {% if c_post == "checked" %}
+            <table>
+                <tr>
+                    <th class="th_results" colspan="2">Posts</th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="post_tipo">Tipo: </label>
+                        <select id="post_tipo" name="post_tipo">
+                            <option value="" {% if fpost_tipo == "" %}selected{% endif %}>-</option>
+                            <option value="Convivio" {% if fpost_tipo == "Convivio" %}selected{% endif %}>Convivio
+                            </option>
+                            <option value="Duvida" {% if fpost_tipo == "Duvida" %}selected{% endif %}>Duvida
+                            </option>
+                            <option value="Explicação" {% if fpost_tipo == "Explicacao" %}selected{% endif %}>
+                                Explicação
+                            </option>
+                            <option value="Anuncio" {% if fpost_tipo == "Anuncio" %}selected{% endif %}>Anuncio
+                            </option>
+                        </select>
+                        <label for="post_escola">Escola: </label>
+                        <select id="post_escola" name="post_escola">
+                            <option value="" {% if fpost_escola == "" %}selected{% endif %}>-</option>
+                            {% for x in escola %}
+                                <option value="{{ x.sigla }}"
+                                        {% if fpost_tipo == x.sigla %}selected{% endif %}>{{ x.sigla }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="file">Ficheiro</label>
+                        <select id="file" name="file">
+                            <option value="" {% if fpost_file == "" %}selected{% endif %}>-</option>
+                            <option value="has_file" {% if fpost_file == "has_file" %}selected{% endif %}>Com
+                                ficheiro
+                            </option>
+                            <option value="no_file" {% if fpost_file == "no_file" %}selected{% endif %}>Sem
+                                ficheiro
+                            </option>
+                        </select>
+                        <label for="comentario">Pesquisar em Comentarios</label>
+                        <input type="checkbox" id="comentario" name="comentario"
+                               value="f_comentario" {{ fpost_comentario }}>
+                        <input type="submit" value="Filtrar">
+                    </td>
+                </tr>
+                {% if not check_posts %}
+                    <tr>
+                        <td>
+                            <strong>{{ post_mensagem }}</strong>
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for x in check_posts %}
+                        <tr>
+                            <td>
+                                <img src="{{ x.autor.imagem_perfil }}" class="userimg">
+                                <a href="{% url 'duvidasemcasa:perfil_user' x.autor.user.username %}">{{ x.autor.user.username }}</a>{# é usado o url original e n o search_page/...... #}
+                                <br>
+                                {% ifequal x.autor.votos 0 %}
+                                    Sem votos
+                                {% else %}
+                                    Rating: {{ x.autor.rating }}
+                                    <br>
+                                    Votos: {{ x.autor.votos }}
+                                {% endifequal %}
+                            </td>
+                            <td class="maior">
+                                <a href="{% url 'duvidasemcasa:post' x.escola.sigla x.id %}">{{ x.titulo }}</a>
+                                <br>
+                                {{ x.preview_texto }}
+                                <br>
+                                {% ifequal x.ratingpost_set.all.count 0 %}
+                                    Sem votos
+                                {% else %}
+                                    Rating: {{ x.rating }}/10
+                                    Votos: {{ x.ratingpost_set.all.count }}
+                                {% endifequal %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        {% endif %}
+        <br>
+        {% if c_news == "checked" %}
+        <div id="noticias">
+            <div id="centro">
+                <strong>Noticias</strong><br>
+            {% if not news %}
+                <strong>{{ news_mensagem }}</strong>
+            {% else %}
+            </div>
+                {% for x in news %}
+                    <a href="{% url 'duvidasemcasa:noticia_especifica' x.id %}">{{ x.titulo }}</a>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+        </div>
+    </form>
+{% endblock %}

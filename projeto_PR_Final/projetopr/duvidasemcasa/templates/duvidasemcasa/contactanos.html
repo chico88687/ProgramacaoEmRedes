@@ -1,0 +1,39 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/contactanos.css' %}"/>
+{% endblock %}
+{% block conteudo %}
+    <h1>{{titulo_pagina}}</h1>
+    <form action="{% url 'duvidasemcasa:envia_contactus' %}" method="post">
+        <p>Tens alguma sugestão para o site ou encontraste algum bug?</p>
+        <p>Envia-nos uma mensagem.</p>
+        {% csrf_token %}
+        <label for="email">Email</label>
+        <br>
+        <input type="email" name="email" id="email" required>
+        <br>
+        <label for="assunto">Assunto</label>
+        <br>
+        <input type="text" name="assunto" id="assunto" required>
+        <br>
+        <label for="nome">Nome</label>
+        <br>
+        <input type="text" name="nome" id="nome">
+        <br>
+        Estatuto:
+        {% for opcao in opcoes %}
+            <input type="radio" name="opcao" id="opcao{{ forloop.counter }}" value="{{ opcao }}" required/>
+            <label for="opcao{{ forloop.counter }}">{{ opcao }}</label>
+        {% endfor %}
+            <input type="radio" name="opcao" id="opcao0" value="Outro" required/>
+            <label for="opcao0">outro<input type="text" name="outro" id="outro"></label>
+        <br>
+        Mensagem
+        <br>
+        <textarea rows="10" id="mensagem" name="mensagem" required></textarea>
+        <br>
+        <input type="checkbox" name="enviar">Enviar copia
+        <input type="submit" value="Enviar mensagem">
+    </form>
+{% endblock %}

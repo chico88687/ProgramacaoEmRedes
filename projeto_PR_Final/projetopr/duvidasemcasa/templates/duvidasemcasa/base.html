@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <title>Duvidas em Casa - {{titulo_pagina}}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="um forum criado no âmbito de uma cadeira do curso de engenharia informatica do ISCTE">
+        <meta name="keywords" content="forum, iscte">
+        <meta name="author" content="Ângelo Mendonça, Francisco Vieira, Susana Polido">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/style.css' %}" />
+        <link rel="icon" href="{% static 'duvidasemcasa/imgs/icon.png' %}"/>
+        <script src="{% static 'duvidasemcasa/js/script.js' %}"></script>
+        {% block estaticos %}
+        {% endblock %}
+    </head>
+    <body>
+    <div>
+        <header class="{{cor.sigla}}s">
+            <a href="/duvidasemcasa/">
+                <img src="{% static 'duvidasemcasa/imgs/logo.png' %}" alt="wip">
+                Duvidas em Casa
+            </a>
+            <img src="{% static 'duvidasemcasa/imgs/hamburger.png' %}" alt="wip" id="controla-nav">
+        </header>
+        <nav class="{{cor.sigla}}s">
+            <ul>
+                {% for p in list_pages %}
+                    <li><a href="/duvidasemcasa/{{p.endereco}}">{{p.nome}}</a></li>
+                {% endfor %}
+                {% for p in list_right %}
+                    <li class="direita"><a href="/duvidasemcasa/{{p.endereco}}">{{p.nome}}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div id="conteudo">
+            {% block conteudo%}
+            i am having fun doing something very ugly looking XD
+            {% endblock %}
+        </div>
+        <footer class="{{cor.sigla}}s">
+            Ângelo Mendonça - nº88401, Francisco Vieira - nº88687, Susana Polido - nº87171
+            <br>
+            ©2020-{%now "Y"%}
+        </footer>
+    </div>
+    </body>
+</html>

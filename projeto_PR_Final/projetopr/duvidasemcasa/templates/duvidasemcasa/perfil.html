@@ -1,0 +1,92 @@
+{% extends "duvidasemcasa/base.html" %}
+{% block estaticos %}
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/perfil.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'duvidasemcasa/css/login.css' %}"/>
+{% endblock %}
+
+{% block conteudo %}
+{% load static %}
+
+{% if sucesso %}
+<p class="aviso" id="sucesso">{{ sucesso }}</p>
+{% endif %}
+{% if erro %}
+<p class="aviso" id="erro">{{ erro }}</p>
+{% endif %}
+
+<form enctype="multipart/form-data" action="{% url 'duvidasemcasa:change'%}" method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td rowspan="5" id="userpic"><img src="{{ user.conta.imagem_perfil }}"></td>
+            <td>Username:</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>Cargo:</td>
+            <td>
+                <select name="tipo" id="tipo">
+                    {% for op in opcoes %}
+                    <option value="{{op}}" {% ifequal user.conta.tipo op %} selected {% endifequal %}>{{op}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Escola:</td>
+            <td>
+                <select id="escola" name="escola" required>
+                    {% for e in escolas %}
+                    <option value="{{e.sigla}}" {% ifequal e.sigla user.conta.escola.sigla %} selected {% endifequal %}>{{e.sigla}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Curso:</td>
+            <td>
+                <input type="text" name="curso" id="curso" value="{{ user.conta.curso_departamento }}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><input type="file" name="imagem" id="imagem"></td>
+        </tr>
+        <tr>
+            <td>Tornar publico<input type="checkbox" name="publico[]" value="0" {% if user.conta.p_email %} checked {% endif %}></td>
+            <td>E-mail:</td>
+            <td><input type="email" name="mail" id="mail" value="{{ user.email }}"></td>
+        </tr>
+        <tr>
+            <td>Tornar publico<input type="checkbox" name="publico[]" value="1" {% if user.conta.p_proprio %} checked {% endif %}></td>
+            <td>Nome Próprio</td>
+            <td><input type="text" name="primeiro" id="primeiro" value="{{ user.first_name }}"></td>
+        </tr>
+        <tr>
+            <td>Tornar publico<input type="checkbox" name="publico[]" value="2" {% if user.conta.p_apelido %} checked {% endif %}></td>
+            <td>Apelido</td>
+            <td><input type="text" name="apelido" id="apelido" value="{{ user.last_name }}"></td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'duvidasemcasa:perfil_user' user.username %}" style="text-decoration: none; color: #0E29C2;"><strong>Perfil Publico</strong></a></td>
+            <td><input type="submit" value="Confirmar" name="confirmar" id="registar"></td>
+            <td><input type="reset" value="Cancelar"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Password:</td>
+            <td><input type="password" name="pass" required></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Nova Password:</td>
+            <td><input type="password" name="nova" id="pass"></td>
+        </tr>
+        <tr>
+            <td><span id="msg"> </span></td>
+            <td>Repetição:</td>
+            <td><input type="password" name="nova2" id="confirma"></td>
+        </tr>
+</table>
+</form>
+{% endblock %}
