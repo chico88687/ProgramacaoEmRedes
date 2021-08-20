@@ -1,0 +1,33 @@
+form{
+    width: 75%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    form{
+        width: 95%;
+    }
+}
+
+input{
+    width: 100%;
+}
+
+input[type=radio], input[type=checkbox], input[type=submit]{
+    width: auto;
+}
+
+#outro{
+    width: 100px;
+}
+
+textarea{
+    width: 100%;
+    resize: none;
+}
+
+input[type=submit]{
+    display: block;
+    margin: auto;
+    text-align: center;
+}

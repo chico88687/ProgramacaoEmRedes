@@ -1,0 +1,30 @@
+#butoes{
+    width: 75%;
+    margin: auto;
+}
+
+#butoes a{
+    text-decoration: none;
+}
+
+a button:enabled{
+    color: black;
+    text-underline: none;
+}
+
+@media only screen and (max-width: 768px) {
+    #butoes{
+        width: 100%;
+    }
+}
+
+.pagination {
+    margin: auto;
+    text-align: center;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}

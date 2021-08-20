@@ -1,0 +1,39 @@
+table {
+    width: 75%;
+    margin: auto;
+    text-align: center;
+}
+
+.userimg{
+    height: 100px;
+    width: auto;
+    max-width: 100px;
+}
+
+#noticias{
+    width: 75%;
+    margin: auto;
+}
+
+#centro{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+th{
+    font-weight: bold;
+}
+
+.maior{
+    text-align: left;
+}
+
+@media only screen and (max-width: 768px) {
+    table{
+        width: 100%;
+    }
+    #noticias{
+        width: 100%;
+    }
+}

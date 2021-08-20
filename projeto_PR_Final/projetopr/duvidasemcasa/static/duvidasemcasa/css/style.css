@@ -1,0 +1,142 @@
+div #intro{
+    width: 75%;
+    margin: auto;
+}
+
+body {
+    background-color: darkgrey;
+}
+
+header {
+    text-align: left;
+    font-size: 50px;
+    background-color: #0E29C2;
+}
+
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+header img{
+    width: 75px;
+    vertical-align: bottom;
+}
+
+#controla-nav{
+    opacity: 50%;
+    width: 50px;
+}
+
+.isctes{
+    background-color: #0E29C2;
+}
+
+.ecshs{
+    background-color: #25B748;
+}
+
+.ibss{
+    background-color: #E21F1B;
+}
+
+.espps{
+    background-color: #F18B00;
+}
+
+.istas{
+    background-color: #14BFB8;
+}
+
+
+#controla-nav{
+    visibility: hidden;
+}
+
+nav ul{
+    border-top: 1px solid white;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li{
+    display: inline;
+    border-right: 1px solid #bbbbbb;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.direita{
+    float: right;
+    border-right: none;
+    border-left: 1px solid #bbbbbb;
+}
+
+.direita:last-child{
+    border-left: none;
+}
+
+nav li:last-child{
+    border-right: none;
+}
+
+nav li a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+}
+
+nav li a:hover {
+  background-color: lightgray;
+  color: black;
+}
+
+@media only screen and (max-width: 768px) {
+    nav{
+        display: none;
+    }
+    nav li{
+        border: none;
+    }
+    nav li a {
+        display: block;
+        text-align: center;
+        border: none;
+    }
+    .direita{
+        float: none;
+        border: none;
+    }
+
+    #controla-nav{
+        visibility: visible;
+    }
+
+    #controla-nav:hover{
+    cursor: pointer;
+    }
+    body{
+        margin: 0;
+    }
+    div #intro{
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+div {
+    background-color: white;
+    width: 100%;
+}
+
+h1{
+    margin-left: 25%;
+}
+
+footer {
+    background-color: #0E29C2;
+    color: white;
+    text-align: center;
+}

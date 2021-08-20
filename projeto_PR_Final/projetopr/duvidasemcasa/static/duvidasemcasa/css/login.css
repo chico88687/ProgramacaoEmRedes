@@ -1,0 +1,19 @@
+table{
+    margin: auto;
+}
+
+input[type=submit]{
+    width: 100%
+}
+
+#erro{
+    background-color: #f6a4a4;
+    color: #920303;
+    text-align: center;
+}
+
+#sucesso{
+    background-color: #bfe7bf;
+    color: #025502;
+    text-align: center;
+}

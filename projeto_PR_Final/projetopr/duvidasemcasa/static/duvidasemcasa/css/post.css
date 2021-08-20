@@ -1,0 +1,112 @@
+section{
+    width: 75%;
+    margin: auto;
+}
+
+h1 { font-size: 2em; }
+
+h1, form{
+    display: inline-block;
+    margin: 0;
+}
+
+#comentario{
+    width: 100%;
+}
+
+.pic_users{
+    height: 100px;
+    width: auto;
+    width-max: 100px;
+    float: left;
+}
+
+#post-user{
+    display: inline-block;
+    border-bottom: 1px solid;
+}
+
+#post-pics{
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+#post-pics img{
+    height: 100px;
+    width: auto;
+    width-max: 100px;
+}
+
+table{
+    width: 75%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 768px){
+    section{
+        width: 100%;
+        padding: 5px;
+    }
+    table{
+        width: 100%;
+    }
+}
+
+.iscte #post-pics, .iscte #post-user{
+    border-color: #0E29C2;
+}
+
+.ecsh #post-pics, .ecsh #post-user{
+    border-color:#25B748;
+}
+
+.espp #post-pics, .espp #post-user{
+    border-color: #F18B00;
+}
+
+.ibs #post-pics, .ibs #post-user{
+    border-color: #E21F1B;
+}
+
+.ista #post-pics, .ista #post-user{
+    border-color: #14BFB8;
+}
+
+span{
+    font-size: smaller;
+    border-bottom: 1px solid black;
+}
+
+tbody tr:nth-child(even) {
+  background-color: lightgray;
+}
+
+.pequeno{
+    width: 20%;
+    vertical-align: top;
+}
+
+.pequeno img{
+    height: 100px;
+    width: auto;
+    max-width: 100px;
+}
+
+.maior{
+    vertical-align: top;
+}
+
+textarea{
+    width: 100%;
+    resize: none;
+}
+
+div .pagination{
+    margin: auto;
+    text-align: center;
+}
+
+div .pagination span{
+    font-size: initial;
+    border: none;
+}

@@ -1,0 +1,32 @@
+button {
+    position: absolute;
+    top: 102px;
+    right: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #0E29C2;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 9px #999;
+}
+
+button:active {
+    background-color: #000f5a;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+article{
+    min-height: 200px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+article img{
+    height: 200px;
+    width: auto;
+    float: left;
+}
